@@ -24,13 +24,13 @@ public partial class AppEditorWindow : Window
 
     private void BrowseComposeClick(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog { Filter = "Compose files|compose.y*ml;docker-compose.y*ml|All files|*.*" };
+        var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Compose files|compose.y*ml;docker-compose.y*ml|All files|*.*" };
         if (dialog.ShowDialog(this) == true) ComposeFileBox.Text = dialog.FileName;
     }
 
     private void BrowseIconClick(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog { Filter = "Image files|*.ico;*.png;*.jpg;*.jpeg|All files|*.*" };
+        var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Image files|*.ico;*.png;*.jpg;*.jpeg|All files|*.*" };
         if (dialog.ShowDialog(this) == true) IconBox.Text = dialog.FileName;
     }
 

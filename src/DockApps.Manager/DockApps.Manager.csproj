@@ -1,4 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><RuntimeIdentifier>win-x64</RuntimeIdentifier><UseWPF>true</UseWPF><RootNamespace>DockApps.Manager</RootNamespace><AssemblyName>DockApps.Manager</AssemblyName><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><RuntimeIdentifier>win-x64</RuntimeIdentifier><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><RootNamespace>DockApps.Manager</RootNamespace><AssemblyName>DockApps.Manager</AssemblyName><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
   <ItemGroup><ProjectReference Include="..\DockApps.Core\DockApps.Core.csproj" /></ItemGroup>
 </Project>

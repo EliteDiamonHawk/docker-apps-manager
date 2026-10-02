@@ -190,10 +190,10 @@ public partial class ManagerWindow : Window
             : $"Docker: {status.State} — {status.Diagnostic}";
         DockerStatusIndicator.Fill = status.State switch
         {
-            DockerEngineState.Ready => Brushes.SeaGreen,
-            DockerEngineState.DesktopStarting or DockerEngineState.EngineNotReady => Brushes.DarkOrange,
-            DockerEngineState.NotInstalled => Brushes.Firebrick,
-            _ => Brushes.Gray
+            DockerEngineState.Ready => System.Windows.Media.Brushes.SeaGreen,
+            DockerEngineState.DesktopStarting or DockerEngineState.EngineNotReady => System.Windows.Media.Brushes.DarkOrange,
+            DockerEngineState.NotInstalled => System.Windows.Media.Brushes.Firebrick,
+            _ => System.Windows.Media.Brushes.Gray
         };
     }
 
@@ -268,13 +268,13 @@ public partial class ManagerWindow : Window
         if (_registry.Apps.Any(x => !string.Equals(x.Id, existing?.Id, StringComparison.OrdinalIgnoreCase)
             && x.Id.Equals(app.Id, StringComparison.OrdinalIgnoreCase)))
         {
-            MessageBox.Show(this, $"An app with ID '{app.Id}' is already registered.", "Registration", MessageBoxButton.OK, MessageBoxImage.Warning);
+            System.Windows.MessageBox.Show(this, $"An app with ID '{app.Id}' is already registered.", "Registration", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
         if (_registry.Apps.Any(x => !string.Equals(x.Id, existing?.Id, StringComparison.OrdinalIgnoreCase)
             && x.ProjectName.Equals(app.ProjectName, StringComparison.OrdinalIgnoreCase)))
         {
-            MessageBox.Show(this, $"Project name '{app.ProjectName}' is already registered.", "Registration", MessageBoxButton.OK, MessageBoxImage.Warning);
+            System.Windows.MessageBox.Show(this, $"Project name '{app.ProjectName}' is already registered.", "Registration", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
@@ -308,7 +308,7 @@ public partial class ManagerWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, ex.Message, "Could not save application", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show(this, ex.Message, "Could not save application", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -320,7 +320,7 @@ public partial class ManagerWindow : Window
     {
         var app = SelectedApp;
         if (app is null) return;
-        if (MessageBox.Show(this, $"Remove '{app.Name}' from DockApps? Running containers will not be stopped.", "Remove application", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+        if (System.Windows.MessageBox.Show(this, $"Remove '{app.Name}' from DockApps? Running containers will not be stopped.", "Remove application", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
 
         SetBusy(true);
         try
@@ -334,7 +334,7 @@ public partial class ManagerWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, ex.Message, "Could not remove application", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show(this, ex.Message, "Could not remove application", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -398,7 +398,7 @@ public partial class ManagerWindow : Window
 
     private async void HardStopClick(object sender, RoutedEventArgs e)
     {
-        if (MessageBox.Show(this, "Stop all containers and Docker Desktop? Docker data will not be deleted.", "Confirm Hard Stop", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+        if (System.Windows.MessageBox.Show(this, "Stop all containers and Docker Desktop? Docker data will not be deleted.", "Confirm Hard Stop", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
         await RunLifecycleOperationAsync("Hard Stop", () => _lifecycle.HardStopAsync());
     }
 

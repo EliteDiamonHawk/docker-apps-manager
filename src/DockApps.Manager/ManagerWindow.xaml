@@ -4,6 +4,7 @@
         Height="700"
         MinWidth="760"
         MinHeight="500"
+        ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen"
         Background="#F7F8FA"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

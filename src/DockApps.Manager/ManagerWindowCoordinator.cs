@@ -31,7 +31,7 @@ public sealed class ManagerWindowCoordinator : IDisposable
         _lifecycle = lifecycle ?? throw new ArgumentNullException(nameof(lifecycle));
         _idle = idle ?? throw new ArgumentNullException(nameof(idle));
         _managerWindowFactory = managerWindowFactory ?? throw new ArgumentNullException(nameof(managerWindowFactory));
-        _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+        _dispatcher = System.Windows.Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
 
         // This observes AppWindow instances created by the existing UI as well as instances
         // created through this coordinator, so idle shutdown does not close an unregistered window.
@@ -70,7 +70,7 @@ public sealed class ManagerWindowCoordinator : IDisposable
         {
             _managerWindowCounted = true;
             _idle.AddWindow();
-            Application.Current.MainWindow = window;
+            System.Windows.Application.Current.MainWindow = window;
             window.Show();
         }
 

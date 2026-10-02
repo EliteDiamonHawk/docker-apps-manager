@@ -155,7 +155,7 @@ public partial class AppWindow : Window
     private void CopyUrlClick(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(_app.Url)) return;
-        Clipboard.SetText(_app.Url);
+        System.Windows.Clipboard.SetText(_app.Url);
         StatusMessage.Text = "URL copied to the clipboard.";
     }
 
