@@ -1,0 +1,1 @@
+<Application x:Class="DockApps.Manager.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"><Application.Resources><Style TargetType="{x:Type Button}"><Setter Property="Margin" Value="4"/><Setter Property="Padding" Value="10,5"/></Style></Application.Resources></Application>

@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><RuntimeIdentifier>win-x64</RuntimeIdentifier><UseWPF>true</UseWPF><RootNamespace>DockApps.Launcher</RootNamespace><AssemblyName>dockapps</AssemblyName><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <ItemGroup><ProjectReference Include="..\DockApps.Core\DockApps.Core.csproj" /></ItemGroup>
+</Project>
