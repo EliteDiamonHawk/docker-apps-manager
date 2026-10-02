@@ -18,13 +18,19 @@ public enum DockerEngineState { Unknown, NotInstalled, DesktopStopped, DesktopSt
 public sealed record DockerDesktopStatus(DockerEngineState State, string? Diagnostic = null)
 {
     public bool IsReady => State == DockerEngineState.Ready;
+    public bool IsDesktopRunning => State is DockerEngineState.DesktopStarting or DockerEngineState.EngineNotReady or DockerEngineState.Ready;
 }
 public sealed record DockerSessionState(bool StartedByDockApps, string? SessionIdentity, DateTimeOffset? StartedAt);
 public sealed record ContainerStatus(string Id, string Name, string State, string? Health, string? Project, string? Service, string? Image, int? ExitCode);
-public sealed record ComposeProjectStatus(string ProjectName, IReadOnlyList<ContainerStatus> Containers)
+public sealed record ComposeProjectStatus(string ProjectName, IReadOnlyList<ContainerStatus> Containers, string? Diagnostic = null)
 {
-    public bool IsRunning => Containers.Any(x => x.State.Equals("running", StringComparison.OrdinalIgnoreCase));
-    public bool IsHealthy => IsRunning && Containers.All(x => x.Health is null or "healthy" or "none");
+    public bool HasInspectionError => !string.IsNullOrWhiteSpace(Diagnostic);
+    public bool IsRunning => !HasInspectionError && Containers.Any(x => x.State.Equals("running", StringComparison.OrdinalIgnoreCase));
+    public bool IsHealthy => !HasInspectionError && Containers.Count > 0 && Containers.All(x =>
+        x.State.Equals("running", StringComparison.OrdinalIgnoreCase) &&
+        (string.IsNullOrWhiteSpace(x.Health) ||
+         x.Health.Equals("healthy", StringComparison.OrdinalIgnoreCase) ||
+         x.Health.Equals("none", StringComparison.OrdinalIgnoreCase)));
 }
 public enum AppRuntimeState { Unknown, Stopped, Starting, Running, Degraded, Error }
 public sealed record AppRuntimeStatus(RegisteredApp App, AppRuntimeState State, ComposeProjectStatus? Project, string? Message = null);

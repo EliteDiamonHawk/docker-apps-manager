@@ -44,7 +44,7 @@ public interface IDockerOwnershipService
     bool IsCurrentSessionOwned(string? sessionIdentity);
 }
 public interface IBrowserService { Task<OperationResult> OpenAsync(string url, CancellationToken cancellationToken = default); }
-public interface IShortcutService { Task CreateAsync(RegisteredApp app, string launcherPath, CancellationToken cancellationToken = default); Task DeleteAsync(RegisteredApp app, CancellationToken cancellationToken = default); }
+public interface IShortcutService { Task<OperationResult> CreateAsync(RegisteredApp app, string launcherPath, CancellationToken cancellationToken = default); Task<OperationResult> DeleteAsync(RegisteredApp app, CancellationToken cancellationToken = default); }
 public interface IAppLifecycleService
 {
     Task<AppRuntimeStatus> OpenAppAsync(string appId, CancellationToken cancellationToken = default);
