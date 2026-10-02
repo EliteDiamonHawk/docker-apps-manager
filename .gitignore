@@ -43,3 +43,7 @@ coverage-report/
 Thumbs.db
 desktop.ini
 
+#reslink
+reslink.toml
+
+.agents/
