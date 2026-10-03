@@ -231,8 +231,7 @@ public sealed class ComposeService(IProcessRunner runner) : IComposeService
             return new(app.ProjectName, [], FailureMessage(result, $"Compose inspection failed for '{app.ProjectName}'."));
         try
         {
-            using var document = JsonDocument.Parse(result.StandardOutput);
-            var items = EnumerateJsonObjects(document.RootElement).Select(x => new ContainerStatus(
+            var items = ParseComposeInspection(result.StandardOutput).Select(x => new ContainerStatus(
                 RequiredString(x, "ID"),
                 RequiredString(x, "Name", "Names"),
                 GetString(x, "State") ?? "unknown",
@@ -265,15 +264,29 @@ public sealed class ComposeService(IProcessRunner runner) : IComposeService
         return result.Succeeded ? OperationResult.Success() : OperationResult.Failure(FailureMessage(result, $"Compose project '{app.ProjectName}' could not be stopped."), result.ExitCode);
     }
 
-    private static IEnumerable<JsonElement> EnumerateJsonObjects(JsonElement root)
+    private static IEnumerable<JsonElement> ParseComposeInspection(string output)
     {
-        if (root.ValueKind == JsonValueKind.Array)
+        // Since Compose 2.21, `ps --format json` emits JSON Lines: one object
+        // per container. A single-container project therefore looks like one
+        // valid JSON document, while a multi-container project is multiple
+        // JSON documents separated by newlines. Keep accepting the array form
+        // emitted by older Compose versions as a compatibility measure.
+        var trimmed = output.Trim();
+        if (trimmed.StartsWith("[", StringComparison.Ordinal))
         {
-            foreach (var item in root.EnumerateArray())
-                if (item.ValueKind == JsonValueKind.Object) yield return item;
+            using var document = JsonDocument.Parse(trimmed);
+            foreach (var item in document.RootElement.EnumerateArray())
+                if (item.ValueKind == JsonValueKind.Object)
+                    yield return item.Clone();
             yield break;
         }
-        if (root.ValueKind == JsonValueKind.Object) yield return root;
+
+        foreach (var line in output.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            using var document = JsonDocument.Parse(line);
+            if (document.RootElement.ValueKind == JsonValueKind.Object)
+                yield return document.RootElement.Clone();
+        }
     }
 
     private static string RequiredString(JsonElement element, params string[] names)
